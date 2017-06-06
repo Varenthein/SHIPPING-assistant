@@ -3,7 +3,7 @@
 <table class="table stripped">
   <thead>
     <tr>
-      <th width="60">Id</th><th>Zlecenie</th><th>Status</th><th width="130">Działania</th>
+      <th width="60">Id</th><th>Zlecenie</th><th>Status</th><th width="170">Działania</th>
     </tr>
   </thead>
   <tbody>
@@ -12,7 +12,8 @@
       <td>{{ order.Nazwa_produktu }}</td>
       <td>{{ order.Status }}</td>
       <td>
-       <button class="btn btn-info btn-sm" ng-click="showContract(con)"><span class="fa fa-eye"></span></button>
+       <button class="btn btn-success btn-sm" ng-click="rejestr(order)"><span class="fa fa-list"></span></button>
+       <button class="btn btn-info btn-sm" ng-click="showOrder(order)"><span class="fa fa-eye"></span></button>
        <button ng-disabled="$root.user.Stanowisko != 'Administrator'" class="btn btn-warning btn-sm" ng-click="editOrder(order)"><span class="fa fa-pencil"></span></button>
        <button ng-disabled="$root.user.Stanowisko != 'Administrator'" class="btn btn-danger btn-sm" ng-click="$root.confirmBox('Jesteś pewny?', 'Czy na pewno chcesz usunąć tę umowę?', removeOrder, order)"><span class="fa fa-remove"></span></button>
       </td>
@@ -116,13 +117,13 @@
           <h3>{{ order.Nazwa_produktu }}</h3>
           <hr>
           <p><strong>Klient</strong> {{ order.Imie + ' ' + order.Nazwisko }}</p>
-          <p><strong>Rodzaj</strong> {{ cats[order.IdTypu] }} </p>
+          <p><strong>Rodzaj</strong> {{ cats[order.IdTypu].Nazwa }} </p>
           <p><strong>Status:</strong> {{ order.Status }}</p>
           <p><strong>Data złożenia:</strong> {{ order.Data_zlozenia }}</p>
           <p><strong>Data wysłania:</strong> {{ order.Data_wyslania }}</p>
           <p><strong>Data wykonania:</strong> {{ order.Data_wykonania }}</p>
           <p><strong>Uwagi</strong></p>
-          <p>{{ order.Uwagi }}</p>
+          <p>{{ order.Uwagi || 'Brak uwag' }}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>

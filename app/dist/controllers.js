@@ -342,7 +342,7 @@ angular.module('KurierCMS').controller('orderController',function($scope, $rootS
 
       $rootScope.breadcrumb = ["Admin", "Zlecenia", "Nowa przesyłka"];
 
-      $scope.order = { Nazwa_produktu: "", Status: "",  Stanowisko: "", Uwagi: "", Data_zlozenia: "", Data_wyslania: "", Data_wykonania: "", IdKlienta: "", IdTypu: "" };
+      $scope.order = { IdZlecenia: "", Nazwa_produktu: "", Status: "",  Stanowisko: "", Uwagi: "", Data_zlozenia: "", Data_wyslania: "", Data_wykonania: "", IdKlienta: "", IdTypu: "" };
       $scope.errors = false;
 
       ClientDataOp.getAll()
@@ -479,10 +479,10 @@ angular.module('KurierCMS').controller('orderController',function($scope, $rootS
 
              /*************** SHOW CONTRACT  **************/
 
-             $scope.showContract = function(zle) {
+             $scope.showOrder = function(zle) {
 
-               $scope.zletract = zle;
-               $("#showContractModal").modal('show');
+               $scope.order = zle;
+               $("#showOrderModal").modal('show');
 
              }
 
