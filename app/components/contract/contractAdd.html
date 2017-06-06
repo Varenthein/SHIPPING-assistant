@@ -1,0 +1,55 @@
+<h2>Nowy klient</h2><hr>
+<form name="contractForm" method="POST" novalidate>
+
+  <div ng-show="errors" class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Błąd!</h4>
+    <p ng-repeat="e in errors">-{{ e }}</p>
+  </div>
+
+  <div class="form-group">
+    <label for="user">Pracownik: </label>
+    <select name="user" ng-model="contract.Pracownik" class="form-control">
+      <option ng-repeat="user in users" value="{{ user.IdPracownika }}">{{ user.Nazwisko + " " + user.Imie }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="pensja">Pensja (w zł)</label>
+    <input class="form-control" ng-model="contract.Pensja" pattern="^[0-9]{1,}$" name="pensja" value="0,00" type="number">
+    <div class="form-control-feedback invalid">To nie jest prawidłowa kwota!</div>
+  </div>
+
+  <div class="form-group">
+    <label for="data-roz">Data rozpoczęcia pracy</label>
+    <input class="form-control" ng-model="contract.Data_rozpoczecia" name="data-roz" type="date">
+    <div class="form-control-feedback invalid">To nie jest prawidłowa data!</div>
+  </div>
+
+  <div class="form-group">
+    <label for="data-zak">Data zakończenia pracy</label>
+    <input class="form-control" ng-model="contract.Data_zakonczenia"  name="data-zak" type="date">
+    <div class="form-control-feedback invalid">To nie jest prawidłowa data!</div>
+  </div>
+
+  <div class="form-group">
+    <label for="stanowisko">Stanowisko</label>
+    <select class="form-control" name="stanowisko" ng-model="contract.Stanowisko">
+      <option selected>Kurier</option>
+      <option>Administrator</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="rodzaj">Rodzaj umowy</label>
+    <select class="form-control" name="rodzaj" ng-model="contract.Rodzaj">
+      <option selected>Umowa o pracę</option>
+      <option>Umowa zlecenie</option>
+      <option>B2B</option>
+    </select>
+  </div>
+
+
+
+<input type="reset" class="btn btn-default" value="Wyczyść">
+<input type="button" ng-disabled="contractForm.$invalid || contractForm.$untouched" ng-click="addContract()" class="btn btn-primary"  value="Dodaj">
+</form>

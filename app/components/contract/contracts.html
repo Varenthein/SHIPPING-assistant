@@ -1,0 +1,114 @@
+<h2>Umowy</h2>
+<hr>
+<table class="table stripped">
+  <thead>
+    <tr>
+      <th width="60">Id</th><th>Imię i nazwisko</th><th>Stanowisko</th><th width="130">Działania</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="con in contracts">
+      <td>{{ $index+1 }}</td>
+      <td>{{ con.Nazwisko + ' ' + con.Imie }}</td>
+      <td>{{ con.Stanowisko }}</td>
+      <td>
+       <button class="btn btn-info btn-sm" ng-click="showContract(con)"><span class="fa fa-eye"></span></button>
+       <button ng-disabled="$root.user.Stanowisko != 'Administrator'" class="btn btn-warning btn-sm" ng-click="editContract(con)"><span class="fa fa-pencil"></span></button>
+       <button ng-disabled="$root.user.Stanowisko != 'Administrator'" class="btn btn-danger btn-sm" ng-click="$root.confirmBox('Jesteś pewny?', 'Czy na pewno chcesz usunąć tę umowę?', removeContract, con)"><span class="fa fa-remove"></span></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div ng-hide="contracts.length > 0" class="alert alert-info">
+  Brak umów...
+</div>
+
+
+<!-- Box do edycji -->
+
+<div id="editContractModal" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edytuj kontrakt</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="contractForm" method="POST" novalidate>
+          <p><small class="form-text text-muted">Edytuj tylko te pola, które mają zostać zmienione</small></p>
+          <div ng-show="errors" class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Błąd!</h4>
+            <p ng-repeat="e in errors">-{{ e }}</p>
+          </div>
+
+          <div class="form-group">
+            <label for="pensja">Pensja (w zł)</label>
+            <input class="form-control" ng-model="contract.Pensja" pattern="^[0-9]{1,}$" name="pensja" type="number">
+            <div class="form-control-feedback invalid">To nie jest prawidłowa kwota!</div>
+          </div>
+
+          <div class="form-group">
+            <label for="data-roz">Data rozpoczęcia pracy</label>
+            <input class="form-control" ng-model="contract.Data_rozpoczecia" name="data-roz" type="date">
+            <div class="form-control-feedback invalid">To nie jest prawidłowa kwota!</div>
+          </div>
+
+          <div class="form-group">
+            <label for="data-zak">Data zakończenia pracy</label>
+            <input class="form-control" ng-model="contract.Data_zakonczenia" name="data-zak" type="date">
+            <div class="form-control-feedback invalid">To nie jest prawidłowa kwota!</div>
+          </div>
+
+          <div class="form-group">
+            <label for="stanowisko">Stanowisko</label>
+            <select class="form-control" name="stanowisko" ng-model="contract.Stanowisko">
+              <option selected>Kurier</option>
+              <option>Administrator</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="rodzaj">Rodzaj umowy</label>
+            <select class="form-control" name="rodzaj" ng-model="contract.Rodzaj">
+              <option selected>Umowa o pracę</option>
+              <option>Umowa zlecenie</option>
+              <option>B2B</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-click="updateContract()" class="btn btn-primary">Zapisz zmiany</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Show contract box -->
+
+<div id="showContractModal" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Szczegółowe informacje</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <h3>{{ contract.Nazwisko + ' ' + contract.Imie }}</h3>
+          <hr>
+          <p><strong>Rodzaj umowy</strong> {{ contract.Rodzaj }} </p>
+          <p><strong>Stanowisko</strong> {{ contract.Stanowisko }} </p>
+          <p><strong>Pensja:</strong> {{ contract.Pensja }} zł</p>
+          <p><strong>Data rozpoczęcia:</strong> {{ contract.Data_rozpoczecia }}</p>
+          <p><strong>Data zakończenia:</strong> {{ contract.Data_zakonczenia }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+      </div>
+    </div>
+  </div>
+</div>

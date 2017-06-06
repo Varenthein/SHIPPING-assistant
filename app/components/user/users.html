@@ -1,0 +1,161 @@
+<h2>Pracownicy</h2>
+<hr>
+<table class="table stripped">
+  <thead>
+    <tr>
+      <th width="60">Id</th><th>Imię i nazwisko</th><th>Stanowisko</th><th width="130">Działania</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="user in users">
+      <td>{{ $index+1 }}</td>
+      <td>{{ user.Nazwisko + ' ' + user.Imie }}</td>
+      <td>{{ user.Stanowisko }}</td>
+      <td>
+       <button class="btn btn-info btn-sm" ng-click="showUser(user)"><span class="fa fa-eye"></span></button>
+       <button class="btn btn-warning btn-sm" ng-disabled="$root.user.Stanowisko != 'Administrator'" ng-click="editUser(user)"><span class="fa fa-pencil"></span></button>
+       <button class="btn btn-danger btn-sm" ng-disabled="(user.IdPracownika == $root.user.IdPracownika) ? true : false"  ng-click="$root.confirmBox('Jesteś pewny?', 'Czy na pewno chcesz usunąć tego użytkownika?', removeUser, user)"><span class="fa fa-remove"></span></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div ng-hide="users.length > 0" class="alert alert-info">
+  Brak użytkowników...
+</div>
+
+
+<h2>Osoby bez umowy</h2>
+<hr>
+<table class="table stripped">
+  <thead>
+    <tr>
+      <th width="60">Id</th><th>Imię i nazwisko</th><th width="130">Działania</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="user in usersWithoutContract">
+      <td>{{ $index+1 }}</td>
+      <td>{{ user.Nazwisko + ' ' + user.Imie }}</td>
+      <td>
+        <button class="btn btn-info btn-sm" ng-click="showUser(user)"><span class="fa fa-eye"></span></button>
+        <button class="btn btn-warning btn-sm" ng-click="editUser(user)"><span class="fa fa-pencil"></span></button>
+        <button class="btn btn-danger btn-sm" ng-show="(user.IdPracownika != $root.user.IdPracownika) ? true : false"  ng-click="$root.confirmBox('Jesteś pewny?', 'Czy na pewno chcesz usunąć tego użytkownika?', removeUser, user)"><span class="fa fa-remove"></span></button>
+    </td>
+    </tr>
+  </tbody>
+</table>
+<div ng-hide="usersWithoutContract.length > 0" class="alert alert-info">
+  Brak użytkowników...
+</div>
+
+
+<!-- Box do edycji -->
+
+<div id="editUserModal" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edytuj pracownika</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="userForm" method="POST" novalidate>
+          <div ng-show="errors" class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Błąd!</h4>
+            <p ng-repeat="e in errors">-{{ e }}</p>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="login">Login</label>
+            <input type="text" pattern="^[_A-z0-9]{1,}$" ng-change="loginOccupied = false" value="{{user.login}}" ng-blur="userExists()" ng-class="(loginOccupied) ? 'form-control form-control-danger': 'form-control'" maxlength="20" minlength="6" placeholder="Wpisz login..." ng-model="user.login" class="form-control" name="login" type="text" required>
+            <div ng-hide="loginOccupied || false"class="form-control-feedback valid">Sukces! Wszystko gra :)</div>
+            <div class="form-control-feedback invalid">Błąd... Login może być długi na 6-20 znaków i zawierać tylko litery od a do Z oraz liczby</div>
+            <div class="form-control-danger info-invalid" ng-show="loginOccupied || false">Błąd... Login zajęty...</div>
+          </div>
+
+          <div class="form-group">
+            <label for="repass">Hasło</label>
+            <input ng-model="user.pass" placeholder="Wpisz hasło..." minlength="6" maxlength="25" class="form-control" name="pass" type="password">
+            <div class="form-control-feedback valid">Sukces! Wszystko gra :)</div>
+            <div class="form-control-feedback invalid">Błąd... Hasło może zawierać od 6 do 25 znaków</div>
+          </div>
+
+          <div class="form-group">
+            <label for="repass">Powtórz hasło</label>
+            <input placeholder="Powtórz hasło..." class="form-control" name="repass" type="password" ng-model="user.repass" compare-to="user.pass">
+            <div class="form-control-feedback valid">Sukces! Wszystko gra :)</div>
+            <div class="form-control-feedback invalid">Hasła się różnią!</div>
+          </div>
+
+          <small class="form-text text-muted">Jeśli nie chcesz zmienić hasła, to pozostaw te pola puste</small>
+
+          <hr>
+
+          <div class="form-group">
+            <label for="name">Imię</label>
+            <input ng-model="user.imie" pattern="^[_\x20A-z0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]{1,}$" placeholder="Wpisz imię" minlength="3" maxlength="40" required class="form-control" name="name" type="text">
+            <div class="form-control-feedback invalid">Hmmm... na pewno się nie pomyliłeś?</div>
+          </div>
+
+          <div class="form-group">
+            <label for="last_name">Nazwisko</label>
+            <input ng-model="user.nazwisko" pattern="^[_\x20A-z0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]{1,}$" placeholder="Wpisz nazwisko..." minlength="3" maxlength="40" required class="form-control" name="last_name" type="text">
+            <div class="form-control-feedback invalid">Hmmm... na pewno się nie pomyliłeś?</div>
+          </div>
+
+          <div class="form-group">
+            <label for="pesel">Pesel</label>
+            <input ng-model="user.pesel" pattern="^[_A-z0-9]{1,}$" placeholder="Wpisz pesel" minlength="11" maxlength="11" required class="form-control" name="pesel" type="number">
+            <div class="form-control-feedback invalid">Pesel musi mieć 11 znaków!</div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="telefon">Numer telefonu</label>
+            <input class="form-control" ng-model="user.telefon" pattern="^[0-9]{1,}$" name="telefon" minlength="9" type="number">
+            <div class="form-control-feedback invalid">To nie jest prawidłowy numer telefonu!</div>
+          </div>
+
+          <div class="form-group">
+            <label for="adres">Adres</label>
+            <textarea ng-model="user.adres" placeholder="Wprowadź adres!" ng-required class="form-control" max-length="300" name="adres">
+            </textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-click="updateUser()" class="btn btn-primary">Zapisz zmiany</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Box do prezentacji -->
+
+<div id="showUserModal" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Szczegółowe informacje</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <h3>{{ user.Nazwisko + ' ' + user.Imie }}</h3>
+          <hr>
+          <p><strong>Login</strong> {{ user.login }} </p>
+          <p><strong>Telefon</strong> {{ user.telefon }} </p>
+          <p><strong>Pesel:</strong> {{ user.pesel }} </p>
+          <p><strong>Adres</strong> </p>
+          <p>{{ user.adres }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<h2>Edytuj profil</h2>
+<hr>
+<form name="userForm" method="POST" novalidate>
+  <div ng-show="errors" class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Błąd!</h4>
+    <p ng-repeat="e in errors">-{{ e }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label" for="login">Login</label>
+    <input type="text" pattern="^[_A-z0-9]{1,}$" ng-change="loginOccupied = false" value="{{user.login}}" ng-blur="userExists()" ng-class="(loginOccupied) ? 'form-control form-control-danger': 'form-control'" maxlength="20" minlength="6" placeholder="Wpisz login..." ng-model="user.login" class="form-control" name="login" type="text" required>
+    <div ng-hide="loginOccupied || false"class="form-control-feedback valid">Sukces! Wszystko gra :)</div>
+    <div class="form-control-feedback invalid">Błąd... Login może być długi na 6-20 znaków i zawierać tylko litery od a do Z oraz liczby</div>
+    <div class="form-control-danger info-invalid" ng-show="loginOccupied || false">Błąd... Login zajęty...</div>
+  </div>
+
+  <div class="form-group">
+    <label for="repass">Hasło</label>
+    <input ng-model="user.pass" placeholder="Wpisz hasło..." minlength="6" maxlength="25" class="form-control" name="pass" type="password">
+    <div class="form-control-feedback valid">Sukces! Wszystko gra :)</div>
+    <div class="form-control-feedback invalid">Błąd... Hasło może zawierać od 6 do 25 znaków</div>
+  </div>
+
+  <div class="form-group">
+    <label for="repass">Powtórz hasło</label>
+    <input placeholder="Powtórz hasło..." class="form-control" name="repass" type="password" ng-model="user.repass" compare-to="user.pass">
+    <div class="form-control-feedback valid">Sukces! Wszystko gra :)</div>
+    <div class="form-control-feedback invalid">Hasła się różnią!</div>
+  </div>
+
+  <small class="form-text text-muted">Jeśli nie chcesz zmienić hasła, to pozostaw te pola puste</small>
+
+  <hr>
+
+  <div class="form-group">
+    <label for="name">Imię</label>
+    <input ng-model="user.imie" pattern="^[_\x20A-z0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]{1,}$" placeholder="Wpisz imię" minlength="3" maxlength="40" required class="form-control" name="name" type="text">
+    <div class="form-control-feedback invalid">Hmmm... na pewno się nie pomyliłeś?</div>
+  </div>
+
+  <div class="form-group">
+    <label for="last_name">Nazwisko</label>
+    <input ng-model="user.nazwisko" pattern="^[_\x20A-z0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]{1,}$" placeholder="Wpisz nazwisko..." minlength="3" maxlength="40" required class="form-control" name="last_name" type="text">
+    <div class="form-control-feedback invalid">Hmmm... na pewno się nie pomyliłeś?</div>
+  </div>
+
+  <div class="form-group">
+    <label for="pesel">Pesel</label>
+    <input ng-model="user.pesel" pattern="^[_A-z0-9]{1,}$" placeholder="Wpisz pesel" minlength="11" maxlength="11" required class="form-control" name="pesel" type="number">
+    <div class="form-control-feedback invalid">Pesel musi mieć 11 znaków!</div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="telefon">Numer telefonu</label>
+    <input class="form-control" ng-model="user.telefon" pattern="^[0-9]{1,}$" name="telefon" minlength="9" type="number">
+    <div class="form-control-feedback invalid">To nie jest prawidłowy numer telefonu!</div>
+  </div>
+
+  <div class="form-group">
+    <label for="adres">Adres</label>
+    <textarea ng-model="user.adres" placeholder="Wprowadź adres!" ng-required class="form-control" max-length="300" name="adres">
+    </textarea>
+  </div>
+
+
+  <button type="button" ng-click="updateUser()" class="btn btn-primary">Zapisz zmiany</button>
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+
+</form>

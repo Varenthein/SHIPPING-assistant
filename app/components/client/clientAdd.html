@@ -1,0 +1,37 @@
+<h2>Nowy klient</h2><hr>
+<form name="userForm" method="POST" novalidate>
+
+  <div ng-show="errors" class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Błąd!</h4>
+    <p ng-repeat="e in errors">-{{ e }}</p>
+  </div>
+
+  <div class="form-group">
+    <label for="name">Imię</label>
+    <input ng-model="user.imie" pattern="^[_\x20A-z0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]{1,}$" placeholder="Wpisz imię" minlength="3" maxlength="40" required class="form-control" name="name" type="text">
+    <div class="form-control-feedback invalid">Hmmm... na pewno się nie pomyliłeś?</div>
+  </div>
+
+  <div class="form-group">
+    <label for="last_name">Nazwisko</label>
+    <input ng-model="user.nazwisko" pattern="^[_\x20A-z0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]{1,}$" placeholder="Wpisz nazwisko..." minlength="3" maxlength="40" required class="form-control" name="last_name" type="text">
+    <div class="form-control-feedback invalid">Hmmm... na pewno się nie pomyliłeś?</div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="telefon">Numer telefonu</label>
+    <input class="form-control" ng-model="user.telefon" pattern="^[0-9]{1,}$" name="telefon" minlength="9" type="number">
+    <div class="form-control-feedback invalid">To nie jest prawidłowy numer telefonu!</div>
+  </div>
+
+  <div class="form-group">
+    <label for="adres">Adres</label>
+    <textarea ng-model="user.adres" placeholder="Wprowadź adres!" required class="form-control" max-length="300" name="adres">
+    </textarea>
+  </div>
+
+
+<input type="reset" class="btn btn-default" value="Wyczyść">
+<input type="button" ng-disabled="userForm.$invalid" ng-click="addUser()" class="btn btn-primary"  value="Dodaj">
+</form>

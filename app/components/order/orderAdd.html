@@ -1,0 +1,67 @@
+<h2>Nowe zlecenie</h2><hr>
+<form name="orderForm" method="POST" novalidate>
+
+  <div ng-show="errors" class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Błąd!</h4>
+    <p ng-repeat="e in errors">-{{ e }}</p>
+  </div>
+
+  <div class="form-group">
+    <label for="nazwa_produktu">Nazwa produktu</label>
+    <input ng-model="order.Nazwa_produktu" pattern="^[_\x20A-z0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]{1,}$" placeholder="Wpisz nazwę" minlength="3" maxlength="40" required class="form-control" name="nazwa_produktu" type="text">
+    <div class="form-control-feedback invalid">Hmmm... na pewno się nie pomyliłeś?</div>
+  </div>
+
+  <div class="form-group">
+    <label for="status">Status</label>
+    <select class="form-control" name="status" ng-model="order.Status">
+      <option selected>Do zatwierdzenia</option>
+      <option>Zatwierdzono</option>
+      <option>W realizacji</option>
+      <option>Dostarczono</option>
+      <option>Przesyłka zgubiona</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="data-roz">Data złożenia</label>
+    <input class="form-control" ng-model="order.Data_zlozenia" name="data-roz" type="date">
+    <div class="form-control-feedback invalid">To nie jest prawidłowa data!</div>
+  </div>
+
+  <div class="form-group">
+    <label for="data-wys">Data wysłania</label>
+    <input class="form-control" ng-model="order.Data_wyslania"  name="data-wys" type="date">
+    <div class="form-control-feedback invalid">To nie jest prawidłowa data!</div>
+  </div>
+
+  <div class="form-group">
+    <label for="data-zak">Data dostarczenia</label>
+    <input class="form-control" ng-model="order.Data_wykonania"  name="data-zak" type="date">
+    <div class="form-control-feedback invalid">To nie jest prawidłowa data!</div>
+  </div>
+
+  <div class="form-group">
+    <label for="uwagi">Uwagi</label>
+    <textarea ng-model="order.Uwagi" placeholder="Uwagi..." ng-required class="form-control" max-length="300" name="uwagi">
+    </textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="user">Zleceniodawca </label>
+    <select name="user" ng-model="order.IdKlienta" class="form-control">
+      <option ng-repeat="user in clients" value="{{ user.IdKlienta }}">{{ user.Nazwisko + " " + user.Imie }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="typ">Typ przesyłki </label>
+    <select name="typ" ng-model="order.IdTypu" class="form-control">
+      <option ng-repeat="cat in cats" value="{{ cat.IdTypu }}">{{ cat.Nazwa }}</option>
+    </select>
+  </div>
+
+
+<input type="reset" class="btn btn-default" value="Wyczyść">
+<input type="button" ng-disabled="orderForm.$invalid || orderForm.$untouched" ng-click="addOrder()" class="btn btn-primary"  value="Dodaj">
+</form>

@@ -1,0 +1,24 @@
+{
+  "name": "sofa-cms",
+  "version": "1.0.0",
+  "description": "Content Managing System for small-size blogs and websites",
+  "main": "main.js",
+  "scripts": {
+    "test": "sofa-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "CMS",
+    "SofaSport"
+  ],
+  "author": "Pawel Zagrobelny",
+  "license": "See in license.txt",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}

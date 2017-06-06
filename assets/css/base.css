@@ -1,0 +1,33 @@
+/* LOGIN BOX */
+
+.logBox .container {
+	max-width: 500px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.logBox .avatar {
+	 width: 200px;
+	 height: 200px;
+	 border: 5px solid #eee;
+	 border-radius: 100%;
+	 object-fit: cover;
+}
+.logBox form {
+	width:300px;
+}
+.logBox h3 {
+	margin: 20px 0px;
+}
+
+.logBox input {
+  margin: 10px 0px;
+}
+
+input[type="submit"] {
+		cursor: pointer;
+}

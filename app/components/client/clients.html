@@ -1,0 +1,103 @@
+<h2>Klienci</h2>
+<hr>
+<table class="table stripped">
+  <thead>
+    <tr>
+      <th width="60">Id</th><th>Imię i nazwisko</th><th width="130">Działania</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="client in clients">
+      <td>{{ $index+1 }}</td>
+      <td>{{ client.Nazwisko + ' ' + client.Imie }}</td>
+      <td>
+       <button class="btn btn-info btn-sm" ng-click="showClient(client)"><span class="fa fa-eye"></span></button>
+       <button ng-disabled="$root.user.Stanowisko != 'Administrator'" class="btn btn-warning btn-sm" ng-click="editClient(client)"><span class="fa fa-pencil"></span></button>
+       <button ng-disabled="$root.user.Stanowisko != 'Administrator'" class="btn btn-danger btn-sm" ng-click="$root.confirmBox('Jesteś pewny?', 'Czy na pewno chcesz usunąć tego użytkownika?', removeClient, client)"><span class="fa fa-remove"></span></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div ng-hide="clients.length > 0" class="alert alert-info">
+  Brak użytkowników...
+</div>
+
+
+<!-- Box do edycji -->
+
+<div id="editClientModal" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edytuj klienta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="userForm" method="POST" novalidate>
+
+          <div ng-show="errors" class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Błąd!</h4>
+            <p ng-repeat="e in errors">-{{ e }}</p>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Imię</label>
+            <input ng-model="user.imie" pattern="^[_\x20A-z0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]{1,}$" placeholder="Wpisz imię" minlength="3" maxlength="40" required class="form-control" name="name" type="text">
+            <div class="form-control-feedback invalid">Hmmm... na pewno się nie pomyliłeś?</div>
+          </div>
+
+          <div class="form-group">
+            <label for="last_name">Nazwisko</label>
+            <input ng-model="user.nazwisko" pattern="^[_\x20A-z0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]{1,}$" placeholder="Wpisz nazwisko..." minlength="3" maxlength="40" required class="form-control" name="last_name" type="text">
+            <div class="form-control-feedback invalid">Hmmm... na pewno się nie pomyliłeś?</div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="telefon">Numer telefonu</label>
+            <input class="form-control" ng-model="user.telefon" pattern="^[0-9]{1,}$" name="telefon" minlength="9" type="number">
+            <div class="form-control-feedback invalid">To nie jest prawidłowy numer telefonu!</div>
+          </div>
+
+          <div class="form-group">
+            <label for="adres">Adres</label>
+            <textarea ng-model="user.adres" placeholder="Wprowadź adres!" required class="form-control" max-length="300" name="adres">
+            </textarea>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-click="updateClient()" class="btn btn-primary">Zapisz zmiany</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Show client box -->
+
+<div id="showClientModal" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Szczegółowe informacje</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <h3>{{ user.nazwisko + ' ' + user.imie }}</h3>
+          <hr>
+          <p><strong>Telefon</strong> {{ user.telefon }} </p>
+          <p><strong>Adres</strong> </p>
+          <p>{{ user.adres }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+      </div>
+    </div>
+  </div>
+</div>

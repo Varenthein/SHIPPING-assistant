@@ -1,0 +1,16 @@
+DirectoryIndex index.php index.html
+Options +FollowSymLinks
+RewriteEngine on
+
+# redirect all api calls to /api/index.php
+RewriteRule ^api/((?!index\.php$).+)/((?!index\.php$).+)/((?!index\.php$).+)$ api/$1.api.php?action=$2&id=$3 [L,NC]
+
+RewriteRule ^api/((?!index\.php$).+)/((?!index\.php$).+)$ api/$1.api.php?action=$2 [L,NC]
+# If the request is a file, folder or symlink that exists, serve it up
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# otherwise, serve your index.html app
+RewriteCond %{REQUEST_FILENAME} /api/   
+RewriteRule ^(.+)$ index.php [L]
