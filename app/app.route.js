@@ -42,6 +42,11 @@ angular.module('KurierCMS').config(function($routeProvider, $locationProvider) {
             controller: 'contractController',
             type: 'add'
         })
+        .when('/contract/my/', {
+            templateUrl: 'app/components/contract/my.html',
+            controller: 'contractController',
+            type: 'my'
+        })
         .when('/order/all/', {
             templateUrl: 'app/components/order/orders.html',
             controller: 'orderController',

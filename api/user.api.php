@@ -174,7 +174,7 @@ switch($_GET['action']) {
             else if(preg_match('/[^\xa-z_\-0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]/i', $user->nazwisko)) $errors[] = "Nazwisko zawiera nieprawidłowe znaki...";
             else if(preg_match('/[^0-9]/i', $user->pesel)) $errors[] = "Nazwisko zawiera nieprawidłowe znaki...";
             else if(preg_match('/[^0-9]/i', $user->telefon)) $errors[] = "Telefon zawiera nieprawidłowe znaki...";
-            else if($user->adres == "" or $user->telefon == "" or $user->nazwisko == "" or $user->imie = "") $errors[] = "Żadne pole nie może być puste!";
+            else if($user->adres == "" or $user->telefon == "" or $user->nazwisko == "" or $user->imie == "") $errors[] = "Żadne pole nie może być puste!";
             else if(preg_match('/[^\xa-z_\-0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]/i', $user->adres)) $errors[] = "Adres zawiera nieprawidłowe znaki...";
             else {
 
@@ -187,7 +187,7 @@ switch($_GET['action']) {
               VALUES (:login, :imie, :nazwisko, :pesel, '', :adres, :telefon, '', '', :pass, :hash, '');");
 
               //binding data
-
+    
               $sth->bindParam(':login', $user->login, PDO::PARAM_STR);
               $sth->bindParam(':imie', $user->imie, PDO::PARAM_STR);
               $sth->bindParam(':nazwisko', $user->nazwisko, PDO::PARAM_STR);

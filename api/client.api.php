@@ -64,7 +64,7 @@ switch($_GET['action']) {
         $errors = [];
 
         $sth = $conn->prepare("SELECT * FROM `klienci` WHERE `IdKlienta` = :id LIMIT 1");
-        $sth->bindParam(':id', $user->idKlienta, PDO::PARAM_INT);
+        $sth->bindParam(':id', $user->IdKlienta, PDO::PARAM_INT);
 
         if($sth->execute()) {
 
@@ -75,10 +75,9 @@ switch($_GET['action']) {
 
             if(preg_match('/[^\xa-z_\-0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]/i', $user->imie)) $errors[] = "Imię zawiera nieprawidłowe znaki...";
             else if(preg_match('/[^\xa-z_\-0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]/i', $user->nazwisko)) $errors[] = "Nazwisko zawiera nieprawidłowe znaki...";
-            else if(preg_match('/[^0-9]/i', $user->pesel)) $errors[] = "Nazwisko zawiera nieprawidłowe znaki...";
             else if(preg_match('/[^0-9]/i', $user->telefon)) $errors[] = "Telefon zawiera nieprawidłowe znaki...";
             else if(preg_match('/[^\xa-z_\-0-9ąćęłńóśźżĄĘŁŃÓŚŹŻ]/i', $user->nazwisko)) $errors[] = "Adres zawiera nieprawidłowe znaki...";
-            else if($user->adres == "" or $user->telefon == "" or $user->nazwisko == "" or $user->imie = "") $errors[] = "Żadne pole nie może być puste!";
+            else if($user->adres == "" or $user->telefon == "" or $user->nazwisko == "" or $user->imie == "") $errors[] = "Żadne pole nie może być puste!";
             else {
 
 
@@ -91,6 +90,7 @@ switch($_GET['action']) {
               $sth->bindParam(':imie', $user->imie, PDO::PARAM_STR);
               $sth->bindParam(':nazwisko', $user->nazwisko, PDO::PARAM_STR);
               $sth->bindParam(':adres', $user->adres, PDO::PARAM_STR);
+              $sth->bindParam(':telefon', $user->telefon, PDO::PARAM_STR);
               $sth->bindParam(':id', $user->IdKlienta, PDO::PARAM_INT);
 
               if($sth->execute()) echo 'success';

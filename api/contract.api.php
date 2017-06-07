@@ -100,7 +100,6 @@ switch($_GET['action']) {
 
             if(preg_match('/[^0-9]/i', $contract->Pensja)) $errors[] = "Pensja nie jest prawidłowo zapisana! [Cyfry od 0 do 9]";
             else if($contract->Pensja < 100) $errors[] = "Nie możesz zaoferować tak mało!";
-            else if($contract->Data_zakonczenia < $contract->Data_rozpoczecia) $errors[] = "Data zakończenia nie może być starsza niż data rozpoczęcia...";
             else if(!in_array($contract->Stanowisko,['Kurier', 'Administrator'])) $errors[] = "Musisz wybrać stanowisko!";
             else if(!in_array($contract->Rodzaj,['Umowa o pracę', 'Umowa zlecenie', 'B2B'])) $errors[] = "Musisz wybrać rodaj zatrudnienia!";
             else {
@@ -148,6 +147,26 @@ switch($_GET['action']) {
 
     break;
 
+    case 'my':
+
+      require_once('logged.api.php');
+
+      try {
+
+        $sth = $conn->prepare("SELECT * FROM umowy INNER JOIN pracownicy ON umowy.IdPracownika = pracownicy.IdPracownika WHERE umowy.IdPracownika = :id");
+        $sth->bindParam(':id', $user->IdPracownika, PDO::PARAM_INT);
+
+        if($sth->execute()) {
+          $result = $sth->fetchAll();
+          echo json_encode($result[0]);
+        } else echo 'error 1';
+
+       } catch(Exception $e) {
+        echo 'error 2'.$e;
+       }
+
+    break;
+
     case 'remove':
 
           require_once('logged.api.php');
@@ -155,6 +174,10 @@ switch($_GET['action']) {
 
           $con = json_decode(file_get_contents('php://input'));
 
+            $sth = $conn->prepare("UPDATE `pracownicy` SET `IdUmowy` = 0 WHERE `IdPracownika` = :id LIMIT 1");
+            $sth->bindParam(':id', $con->IdPracownika, PDO::PARAM_INT);
+
+            $sth->execute();
 
             $sth = $conn->prepare("DELETE FROM `umowy` WHERE `IdUmowy` = :id LIMIT 1");
             $sth->bindParam(':id', $con->IdUmowy, PDO::PARAM_INT);

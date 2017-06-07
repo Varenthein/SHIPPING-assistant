@@ -353,3 +353,10 @@ medium-editor ::selection {
     cursor: pointer; }
     .medium-editor-table-builder-toolbar button i {
       color: white; }
+
+
+/* ORDERS */
+
+#recordModal .modal-content  {
+  min-width:  800px;
+}

@@ -47,6 +47,10 @@ DataService.factory('ContractDataOp', ['$http', function ($http) {
         return $http.get('api/contract/all');
     };
 
+    ContractDataOp.getMy = function () {
+        return $http.get('api/contract/my');
+    };
+
     ContractDataOp.removeContract = function (con) {
         return $http.post('api/contract/remove', con);
     };
@@ -80,6 +84,26 @@ DataService.factory('OrderDataOp', ['$http', function ($http) {
     };
 
     return OrderDataOp;
+
+}]);
+
+DataService.factory('RecordDataOp', ['$http', function ($http) {
+
+    var RecordDataOp = {};
+
+    RecordDataOp.addRecord = function (con) {
+        return $http.post('api/record/add', con);
+    };
+
+    RecordDataOp.getOne = function (order) {
+        return $http.post('api/record/all', order);
+    };
+
+    RecordDataOp.removeRecord = function (con) {
+        return $http.post('api/record/remove', con);
+    };
+
+    return RecordDataOp;
 
 }]);
 

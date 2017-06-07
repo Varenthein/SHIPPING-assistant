@@ -72,7 +72,7 @@
 
       <!-- FOOTER -->
       <footer class="footer">
-          <p>&copy; Paweł Zagrobelny 2017</p>
+          <p>&copy; Paweł Zagrobelny & Michał Graczyk 2017</p>
       </footer>
 
     </section>

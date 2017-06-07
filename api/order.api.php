@@ -94,7 +94,7 @@ switch($_GET['action']) {
               //Insert user to database
 
               $sth = $conn->prepare("UPDATE `zlecenia` SET
-              `Nazwa_produktu` = :nazwa, `Status` = :status, `Uwagi` = :uwagi, `Data_zlozenia` = :data_start, `Data_wyslania` = :data_wys, `Data_wykonania` = :data_end, `IdTypu` = :IdTypu WHERE `idZlecenia` = :id");
+              `Nazwa_produktu` = :nazwa, `Status` = :status, `Uwagi` = :uwagi, `Data_zlozenia` = :data_start, `Data_wyslania` = :data_wys, `Data_wykonania` = :data_end, `IdTypu` = :IdTypu WHERE `IdZlecenia` = :id");
 
               //binding data
 

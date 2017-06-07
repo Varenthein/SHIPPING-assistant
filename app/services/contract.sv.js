@@ -10,6 +10,10 @@ DataService.factory('ContractDataOp', ['$http', function ($http) {
         return $http.get('api/contract/all');
     };
 
+    ContractDataOp.getMy = function () {
+        return $http.get('api/contract/my');
+    };
+
     ContractDataOp.removeContract = function (con) {
         return $http.post('api/contract/remove', con);
     };

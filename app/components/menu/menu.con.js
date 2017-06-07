@@ -12,7 +12,8 @@ angular.module('KurierCMS').controller('menuController',function($scope) {
       ] },
       { name: "Umowy", icon: "handshake-o", links: [
         {  title: "Dodaj umowę", url: "#/contract/add/", perm: "Administrator" },
-        {  title: "Umowy", url: "#/contract/all/" },
+        {  title: "Umowy", url: "#/contract/all/", perm: "Administrator" },
+        {  title: "Mój kontrakt", url: "#/contract/my/" },
       ] },
       { name: "Klienci", icon: "dollar", links: [
         {  title: "Nowy klient", url: "#/client/add/", perm: "Administrator"},

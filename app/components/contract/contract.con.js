@@ -60,6 +60,28 @@ angular.module('KurierCMS').controller('contractController',function($scope, $ro
 
       }
 
+      /************ CONTRACT->MY ***************/
+
+       if($scope.type == "my") {
+         ContractDataOp.getMy()
+         .then(function onSuccess(response) {
+           if(response.data != 'error') {
+               $scope.contract = response.data;
+               if(response.data === "") {
+                 addAlert('danger', 'Umowa nie została załadowane...');
+             }
+           }
+           else {
+               addAlert('danger', 'Umowa nie została załadowane..');
+               window.location="#/contract/all/";
+           }
+         }).catch(function onError(response) {
+             addAlert('danger', 'Umowa nie została załadowane..');
+             window.location="#/contract/all/";
+         });
+       }
+
+
       /************ CONTRACT->all ***************/
 
        if($scope.type == "all") {
@@ -108,6 +130,7 @@ angular.module('KurierCMS').controller('contractController',function($scope, $ro
                    if(response.data == 'success') {
                      addAlert('success', 'Umowa została zmieniona!');
                      $scope.loadContracts(); //refresh users
+                     $scope.contractForm.$setPristine();
                      } else addAlert('danger', 'Cos poszlo nie tak');
                    }).catch(function onError(response) {
                      addAlert('danger', 'Cos poszlo nie tak');

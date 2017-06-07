@@ -12,7 +12,7 @@
       <td>{{ order.Nazwa_produktu }}</td>
       <td>{{ order.Status }}</td>
       <td>
-       <button class="btn btn-success btn-sm" ng-click="rejestr(order)"><span class="fa fa-list"></span></button>
+       <button class="btn btn-success btn-sm" ng-click="showRecord(order)"><span class="fa fa-list"></span></button>
        <button class="btn btn-info btn-sm" ng-click="showOrder(order)"><span class="fa fa-eye"></span></button>
        <button ng-disabled="$root.user.Stanowisko != 'Administrator'" class="btn btn-warning btn-sm" ng-click="editOrder(order)"><span class="fa fa-pencil"></span></button>
        <button ng-disabled="$root.user.Stanowisko != 'Administrator'" class="btn btn-danger btn-sm" ng-click="$root.confirmBox('Jesteś pewny?', 'Czy na pewno chcesz usunąć tę umowę?', removeOrder, order)"><span class="fa fa-remove"></span></button>
@@ -102,7 +102,7 @@
   </div>
 </div>
 
-<!-- Show contract box -->
+<!-- Show order box -->
 
 <div id="showOrderModal" class="modal fade">
   <div class="modal-dialog" role="document">
@@ -124,6 +124,67 @@
           <p><strong>Data wykonania:</strong> {{ order.Data_wykonania }}</p>
           <p><strong>Uwagi</strong></p>
           <p>{{ order.Uwagi || 'Brak uwag' }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Show contract box -->
+
+<div id="recordModal" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Rejestr dla {{ order.Nazwa_produktu }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <h3>{{ order.Nazwa_produktu }}</h3>
+          <hr>
+          <form ng-hide="$root.user.Stanowisko != 'Kurier'"  name="recordForm" novalidate>
+            <div class="form-group">
+              <label for="data-start">Data otrzymania</label>
+              <input class="form-control" ng-model="record.Data_otrzymania" name="data-start" type="datetime-local">
+              <div class="form-control-feedback invalid">To nie jest prawidłowa data!</div>
+            </div>
+
+            <div class="form-group">
+              <label for="data-wys">Data dostarczenia</label>
+              <input class="form-control" ng-model="record.Data_dostarczenia"  name="data-wys" type="datetime-local">
+              <div class="form-control-feedback invalid">To nie jest prawidłowa data!</div>
+            </div>
+
+            <input type="button" ng-disabled="recordForm.$invalid" ng-click="addRecord()" class="btn btn-primary"  value="Dodaj">
+
+          </form>
+          <br>
+
+          <table class="table stripped">
+            <thead>
+              <tr>
+                <th width="60">Id</th><th>Data otrzymania</th><th>Data dostarczenia</th><th>Kurier</td><th width="170">Działania</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="record in records">
+                <td>{{ $index+1 }}</td>
+                <td>{{ record.data_otrzymania }}</td>
+                <td>{{ record.data_dostarczenia }}</td>
+                <td>{{ record.Imie + ' ' + record.Nazwisko}}</td>
+                <td>
+                 <button ng-disabled="$root.user.Stanowisko != 'Kurier'" class="btn btn-danger btn-sm" ng-click="$root.confirmBox('Jesteś pewny?', 'Czy na pewno chcesz usunąć ten wpis?', removeRecord, record)"><span class="fa fa-remove"></span></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div ng-hide="records.length > 0" class="alert alert-info">
+            Brak wpisów...
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
